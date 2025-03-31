@@ -8,42 +8,44 @@ export default function ArtworkDetail() {
   const artwork = artworks.find((art) => art.id === id);
   const [showForm, setShowForm] = useState(false);
 
-  if (!artwork) return <p>Artwork not found.</p>;
+  if (!artwork) return <p className="p-10 text-center">Artwork not found.</p>;
 
   return (
-    <div>
-      <h1>{artwork.title}</h1>
-      <img
-        src={artwork.image}
-        alt={artwork.title}
-        style={{ maxWidth: '600px', width: '100%' }}
-      />
-      <p>{artwork.description}</p>
-      <p>
-        <strong>Dimensions:</strong> {artwork.dimensions}
-      </p>
-      <p>
-        <strong>Price:</strong> {artwork.price}
-      </p>
+    <div className="max-w-5xl mx-auto px-6 py-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
 
-      <button onClick={() => setShowForm(true)} style={styles.button}>
-        Inquire
-      </button>
+        {/* 🖼 Artwork Image */}
+        <div className="flex justify-center">
+          <div className="w-[300px] h-[200px] overflow-hidden border border-gray-300 rounded shadow">
+            <img
+              src={artwork.image}
+              alt={artwork.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
 
-      {showForm && <InquiryForm artwork={artwork} />}
+        {/* 🎨 Artwork Details */}
+        <div className="space-y-4">
+          <h1 className="text-4xl font-bold">{artwork.title}</h1>
+          <p className="text-xl text-gray-700">{artwork.price}</p>
+          <p className="text-sm text-gray-500">Dimensions: {artwork.dimensions}</p>
+          <p className="text-gray-600">{artwork.description}</p>
+
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="mt-6 px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+          >
+            {showForm ? 'Hide Inquiry Form' : 'Inquire About This Artwork'}
+          </button>
+
+          {showForm && (
+            <div className="mt-6">
+              <InquiryForm artwork={artwork} />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
-
-const styles = {
-  button: {
-    marginTop: '1rem',
-    padding: '0.5rem 1rem',
-    fontSize: '1rem',
-    backgroundColor: '#333',
-    color: '#fff',
-    border: 'none',
-    cursor: 'pointer',
-    borderRadius: '4px',
-  },
-};
