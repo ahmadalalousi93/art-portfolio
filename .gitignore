@@ -34,3 +34,7 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore artwork images
+frontend/public/artworks/
+
