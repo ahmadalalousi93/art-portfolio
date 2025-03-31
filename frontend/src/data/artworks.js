@@ -1,22 +1,21 @@
 const artworks = [
     {
-      id: 'sunset-bliss',
-      title: 'Sunset Bliss',
-      image: '/artworks/sunset.PNG', // We'll add this soon
-      price: '$2400',
-      dimensions: '16x20 in',
-      description: 'A peaceful sunset over a calm lake.',
+      id: 'cosmic',
+      title: 'Cosmic',
+      image: '/artworks/cosmic.jpeg',
+      description: 'A vivid digital depiction of cosmic energy.',
+      dimensions: '24x36 in',
+      price: '$500',
     },
     {
-      id: 'cosmic-dream',
-      title: 'Cosmic Dream',
-      image: '/artworks/cosmic.PNG',
-      price: '$2500',
+      id: 'sunset',
+      title: 'Sunset',
+      image: '/artworks/sunset.jpeg',
+      description: 'A warm, classic oil painting capturing a sunset.',
       dimensions: '18x24 in',
-      description: 'A dreamy, abstract interpretation of the galaxy.',
+      price: '$300',
     },
-    // Add more if you like
-  ]
+  ];
   
-  export default artworks
+  export default artworks;
   
