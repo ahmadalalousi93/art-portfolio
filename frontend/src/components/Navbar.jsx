@@ -6,8 +6,6 @@ export default function Navbar() {
       <div style={styles.logo}>My Art</div>
       <div style={styles.links}>
         <Link to="/">Home</Link>
-        <Link to="/classic">Classic Art</Link>
-        <Link to="/digital">Digital Art</Link>
         <Link to="/shop">Shop</Link>
         <Link to="/contact">Contact</Link>
       </div>
