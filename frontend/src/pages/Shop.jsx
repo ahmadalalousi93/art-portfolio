@@ -21,15 +21,15 @@ export default function Shop() {
   const digitalArt = artworks.filter((art) => art.category === 'digital');
 
   return (
-    <div className="px-4 py-20 max-w-7xl mx-auto space-y-20">
+    <div className="px-4 py-16 sm:py-20 max-w-7xl mx-auto space-y-16 sm:space-y-20">
 
-      <h1 className="text-4xl font-bold text-center mb-8">Gallery Collection</h1>
+      <h1 className="text-3xl sm:text-4xl font-bold text-center mb-8">Gallery Collection</h1>
 
       {/* 🖼️ Classic Art Section */}
       <section>
-        <h2 className="text-2xl sm:text-3xl font-semibold mb-8 border-b pb-2">Classic Art</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-8 border-b pb-2">Classic Art</h2>
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10"
           variants={containerVariants}
           initial="hidden"
           animate="show"
@@ -40,9 +40,9 @@ export default function Shop() {
                 <img
                   src={art.image}
                   alt={art.title}
-                  className="w-full h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
+                  className="w-full h-56 sm:h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
                 />
-                <h3 className="mt-3 text-lg font-semibold">{art.title}</h3>
+                <h3 className="mt-3 text-lg sm:text-xl font-semibold">{art.title}</h3>
                 <p className="text-sm text-gray-500">{art.dimensions}</p>
                 <p className="text-base text-gray-800 font-medium">{art.price}</p>
               </Link>
@@ -53,9 +53,9 @@ export default function Shop() {
 
       {/* 💻 Digital Art Section */}
       <section>
-        <h2 className="text-2xl sm:text-3xl font-semibold mb-8 border-b pb-2">Digital Art</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-8 border-b pb-2">Digital Art</h2>
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10"
           variants={containerVariants}
           initial="hidden"
           animate="show"
@@ -66,9 +66,9 @@ export default function Shop() {
                 <img
                   src={art.image}
                   alt={art.title}
-                  className="w-full h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
+                  className="w-full h-56 sm:h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
                 />
-                <h3 className="mt-3 text-lg font-semibold">{art.title}</h3>
+                <h3 className="mt-3 text-lg sm:text-xl font-semibold">{art.title}</h3>
                 <p className="text-sm text-gray-500">{art.dimensions}</p>
                 <p className="text-base text-gray-800 font-medium">{art.price}</p>
               </Link>
