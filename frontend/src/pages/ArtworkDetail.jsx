@@ -1,49 +1,50 @@
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import artworks from '../data/artworks';
-import InquiryForm from '../components/InquiryForm';
 
 export default function ArtworkDetail() {
   const { id } = useParams();
   const artwork = artworks.find((art) => art.id === id);
-  const [showForm, setShowForm] = useState(false);
 
-  if (!artwork) return <p className="p-10 text-center">Artwork not found.</p>;
+  if (!artwork) return <p className="text-center py-20 text-gray-600">Artwork not found.</p>;
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div className="px-6 py-20 max-w-6xl mx-auto">
+      {/* 🔙 Back Link */}
+      <Link to="/shop" className="text-sm text-gray-500 hover:text-black transition mb-6 inline-block">
+        ← Back to Gallery
+      </Link>
 
-        {/* 🖼 Artwork Image */}
-        <div className="flex justify-center">
-          <div className="w-[300px] h-[200px] overflow-hidden border border-gray-300 rounded shadow">
-            <img
-              src={artwork.image}
-              alt={artwork.title}
-              className="w-full h-full object-cover"
-            />
+      {/* 📦 Artwork Layout */}
+      <div className="flex flex-col md:flex-row gap-10 items-start">
+        {/* 🎨 Image */}
+        <img
+  src={artwork.image}
+  alt={artwork.title}
+  className="w-full md:w-1/2 max-h-[500px] object-cover rounded-xl shadow-lg"
+/>
+
+
+        {/* 📝 Details */}
+        <div className="flex-1 space-y-4">
+          <h1 className="text-3xl font-bold">{artwork.title}</h1>
+          <p className="text-gray-600 text-lg">{artwork.description}</p>
+
+          <div className="text-sm text-gray-500">
+            <p><strong>Dimensions:</strong> {artwork.dimensions}</p>
+            <p><strong>Price:</strong> {artwork.price}</p>
+            {/* Optional future metadata:
+            <p><strong>Medium:</strong> Oil on canvas</p>
+            <p><strong>Year:</strong> 2025</p>
+            */}
           </div>
-        </div>
 
-        {/* 🎨 Artwork Details */}
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold">{artwork.title}</h1>
-          <p className="text-xl text-gray-700">{artwork.price}</p>
-          <p className="text-sm text-gray-500">Dimensions: {artwork.dimensions}</p>
-          <p className="text-gray-600">{artwork.description}</p>
-
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="mt-6 px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+          {/* 📩 Inquire Button */}
+          <Link
+            to="/contact"
+            className="inline-block mt-6 bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition"
           >
-            {showForm ? 'Hide Inquiry Form' : 'Inquire About This Artwork'}
-          </button>
-
-          {showForm && (
-            <div className="mt-6">
-              <InquiryForm artwork={artwork} />
-            </div>
-          )}
+            Inquire About This Piece
+          </Link>
         </div>
       </div>
     </div>
