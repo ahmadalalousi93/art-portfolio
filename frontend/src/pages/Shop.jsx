@@ -1,5 +1,20 @@
 import { Link } from 'react-router-dom';
 import artworks from '../data/artworks';
+import { motion } from 'framer-motion';
+
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.95, y: 20 },
+  show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+};
 
 export default function Shop() {
   const classicArt = artworks.filter((art) => art.category === 'classic');
@@ -13,39 +28,53 @@ export default function Shop() {
       {/* 🖼️ Classic Art Section */}
       <section>
         <h2 className="text-2xl sm:text-3xl font-semibold mb-8 border-b pb-2">Classic Art</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           {classicArt.map((art) => (
-            <Link to={`/shop/${art.id}`} key={art.id} className="group block text-center">
-              <img
-                src={art.image}
-                alt={art.title}
-                className="w-full h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
-              />
-              <h3 className="mt-3 text-lg font-semibold">{art.title}</h3>
-              <p className="text-sm text-gray-500">{art.dimensions}</p>
-              <p className="text-base text-gray-800 font-medium">{art.price}</p>
-            </Link>
+            <motion.div key={art.id} variants={cardVariants}>
+              <Link to={`/shop/${art.id}`} className="group block text-center">
+                <img
+                  src={art.image}
+                  alt={art.title}
+                  className="w-full h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
+                />
+                <h3 className="mt-3 text-lg font-semibold">{art.title}</h3>
+                <p className="text-sm text-gray-500">{art.dimensions}</p>
+                <p className="text-base text-gray-800 font-medium">{art.price}</p>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* 💻 Digital Art Section */}
       <section>
         <h2 className="text-2xl sm:text-3xl font-semibold mb-8 border-b pb-2">Digital Art</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           {digitalArt.map((art) => (
-            <Link to={`/shop/${art.id}`} key={art.id} className="group block text-center">
-              <img
-                src={art.image}
-                alt={art.title}
-                className="w-full h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
-              />
-              <h3 className="mt-3 text-lg font-semibold">{art.title}</h3>
-              <p className="text-sm text-gray-500">{art.dimensions}</p>
-              <p className="text-base text-gray-800 font-medium">{art.price}</p>
-            </Link>
+            <motion.div key={art.id} variants={cardVariants}>
+              <Link to={`/shop/${art.id}`} className="group block text-center">
+                <img
+                  src={art.image}
+                  alt={art.title}
+                  className="w-full h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
+                />
+                <h3 className="mt-3 text-lg font-semibold">{art.title}</h3>
+                <p className="text-sm text-gray-500">{art.dimensions}</p>
+                <p className="text-base text-gray-800 font-medium">{art.price}</p>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
     </div>
   );
