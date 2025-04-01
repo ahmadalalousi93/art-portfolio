@@ -1,38 +1,51 @@
-import { Link } from 'react-router-dom';
 import artworks from '../data/artworks';
+import { Link } from 'react-router-dom';
 
 export default function Shop() {
-  return (
-    <div className="px-6 py-16 bg-white min-h-screen">
-      <h1 className="text-4xl font-bold text-center mb-12">Shop Artworks</h1>
+  const classicArt = artworks.filter((art) => art.category === 'classic');
+  const digitalArt = artworks.filter((art) => art.category === 'digital');
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
-        {artworks.map((art) => (
-          <Link
-            to={`/shop/${art.id}`}
-            key={art.id}
-            className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition bg-white"
-          >
-            <div className="flex justify-center items-center bg-gray-100">
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-16 space-y-20">
+
+      {/* 🖼️ Classic Art Section */}
+      <section>
+        <h2 className="text-4xl font-bold mb-8 border-b pb-2">Classic Art</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+          {classicArt.map((art) => (
+            <Link to={`/shop/${art.id}`} key={art.id} className="block group">
               <img
                 src={art.image}
                 alt={art.title}
-                style={{
-                  width: '225px',
-                  height: '150px',
-                  objectFit: 'cover',
-                  border: '2px solid #ccc',
-                  backgroundColor: '#f0f0f0',
-                }}
+                className="w-full h-64 object-cover rounded-lg shadow-lg group-hover:opacity-80 transition"
               />
-            </div>
-            <div className="p-4 text-center">
-              <h2 className="text-xl font-semibold">{art.title}</h2>
-              <p className="text-gray-500">{art.price}</p>
-            </div>
-          </Link>
-        ))}
-      </div>
+              <h3 className="mt-4 text-xl font-semibold">{art.title}</h3>
+              <p className="text-sm text-gray-500">{art.dimensions}</p>
+              <p className="text-lg font-medium text-gray-800">{art.price}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 💻 Digital Art Section */}
+      <section>
+        <h2 className="text-4xl font-bold mb-8 border-b pb-2">Digital Art</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+          {digitalArt.map((art) => (
+            <Link to={`/shop/${art.id}`} key={art.id} className="block group">
+              <img
+                src={art.image}
+                alt={art.title}
+                className="w-full h-64 object-cover rounded-lg shadow-lg group-hover:opacity-80 transition"
+              />
+              <h3 className="mt-4 text-xl font-semibold">{art.title}</h3>
+              <p className="text-sm text-gray-500">{art.dimensions}</p>
+              <p className="text-lg font-medium text-gray-800">{art.price}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
     </div>
   );
 }
