@@ -6,6 +6,7 @@ import ArtworkDetail from './pages/ArtworkDetail';
 import Contact from './pages/Contact';
 import ThankYou from './pages/ThankYou';
 import NotFound from './pages/NotFound';
+import About from './pages/About'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/thank-you" element={<ThankYou />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Layout>
   );

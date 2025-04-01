@@ -8,6 +8,7 @@ export default function Navbar() {
         <Link to="/">Home</Link>
         <Link to="/shop">Shop</Link>
         <Link to="/contact">Contact</Link>
+        <Link to="/about" className="hover:underline">About</Link>
       </div>
     </nav>
   )

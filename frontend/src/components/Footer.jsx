@@ -11,6 +11,7 @@ export default function Footer() {
           <Link to="/" className="hover:text-black transition">Home</Link>
           <Link to="/shop" className="hover:text-black transition">Shop</Link>
           <Link to="/contact" className="hover:text-black transition">Contact</Link>
+          <a href="/about" className="hover:text-black transition">About</a>
         </nav>
 
         <div className="flex gap-3">
