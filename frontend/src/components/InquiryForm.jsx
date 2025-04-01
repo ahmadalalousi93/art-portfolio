@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const InquiryForm = ({ artwork }) => {
+export default function InquiryForm({ artwork }) {
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -13,28 +13,22 @@ const InquiryForm = ({ artwork }) => {
 
   const validate = () => {
     const newErrors = {};
-
     if (!form.name.trim()) newErrors.name = 'Name is required';
-    if (!form.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^\S+@\S+\.\S+$/.test(form.email)) {
-      newErrors.email = 'Email format is invalid';
-    }
+    if (!form.email.trim()) newErrors.email = 'Email is required';
     if (!form.message.trim()) newErrors.message = 'Message is required';
-
     return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    setErrors({}); // Clear errors
+    setErrors({});
+    setStatus(null);
 
     try {
       const response = await fetch('http://localhost:8080/api/inquiries', {
@@ -51,94 +45,68 @@ const InquiryForm = ({ artwork }) => {
 
       setStatus('✅ Inquiry sent successfully!');
       setForm({ name: '', email: '', phone: '', message: '' });
-    } catch (err) {
+    } catch {
       setStatus('❌ Something went wrong. Please try again.');
     }
   };
 
   return (
-    <form style={styles.form} onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Your Name"
-        value={form.name}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-        style={styles.input}
-      />
-      {errors.name && <p style={styles.error}>{errors.name}</p>}
+    <form onSubmit={handleSubmit} className="space-y-4 mt-8 max-w-md mx-auto text-left">
 
-      <input
-        type="email"
-        placeholder="Your Email"
-        value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
-        style={styles.input}
-      />
-      {errors.email && <p style={styles.error}>{errors.email}</p>}
+      <div>
+        <input
+          type="text"
+          placeholder="Your Name *"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          className="w-full p-3 border rounded"
+        />
+        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+      </div>
 
-      <input
-        type="tel"
-        placeholder="Your Phone (optional)"
-        value={form.phone}
-        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-        style={styles.input}
-      />
+      <div>
+        <input
+          type="email"
+          placeholder="Your Email *"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          className="w-full p-3 border rounded"
+        />
+        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+      </div>
 
-      <textarea
-        placeholder="Your Message"
-        value={form.message}
-        onChange={(e) => setForm({ ...form, message: e.target.value })}
-        style={styles.textarea}
-      />
-      {errors.message && <p style={styles.error}>{errors.message}</p>}
+      <div>
+        <input
+          type="tel"
+          placeholder="Your Phone (optional)"
+          value={form.phone}
+          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+          className="w-full p-3 border rounded"
+        />
+      </div>
 
-      <small style={styles.note}>
+      <div>
+        <textarea
+          placeholder="Your Message *"
+          value={form.message}
+          onChange={(e) => setForm({ ...form, message: e.target.value })}
+          className="w-full p-3 border rounded h-28"
+        />
+        {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+      </div>
+
+      <small className="text-sm text-gray-500">
         We may contact you by phone or email to follow up on your inquiry.
       </small>
 
-      <button type="submit" style={styles.submit}>Send Inquiry</button>
+      <button
+        type="submit"
+        className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition"
+      >
+        Send Inquiry
+      </button>
 
-      {status && <p>{status}</p>}
+      {status && <p className="mt-3 text-sm">{status}</p>}
     </form>
   );
-};
-
-const styles = {
-  form: {
-    marginTop: '1rem',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.75rem',
-    maxWidth: '400px',
-  },
-  input: {
-    padding: '0.5rem',
-    fontSize: '1rem',
-  },
-  textarea: {
-    padding: '0.5rem',
-    fontSize: '1rem',
-    height: '100px',
-  },
-  submit: {
-    padding: '0.5rem 1rem',
-    fontSize: '1rem',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    cursor: 'pointer',
-    borderRadius: '4px',
-  },
-  note: {
-    fontSize: '0.85rem',
-    color: '#666',
-  },
-  error: {
-    color: 'red',
-    fontSize: '0.875rem',
-    marginTop: '-0.5rem',
-    marginBottom: '0.5rem',
-  },
-};
-
-export default InquiryForm;
+}

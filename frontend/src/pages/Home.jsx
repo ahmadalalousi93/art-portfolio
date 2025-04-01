@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom';
 import artworks from '../data/artworks';
+import { motion } from 'framer-motion';
 
 export default function Home() {
   const featured = artworks.slice(0, 2); // Display first two artworks
 
   return (
-    <div className="text-center px-4 py-20 max-w-7xl mx-auto space-y-20">
-
+    <motion.div
+      className="text-center px-4 py-20 max-w-7xl mx-auto space-y-20"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
       {/* 🎨 Hero Section */}
       <section>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4">
@@ -47,6 +52,6 @@ export default function Home() {
           View Full Gallery
         </Link>
       </section>
-    </div>
+    </motion.div>
   );
 }
