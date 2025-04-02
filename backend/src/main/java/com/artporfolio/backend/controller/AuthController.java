@@ -9,7 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin(origins = "*") // Allow frontend access
+@CrossOrigin(origins = "http://localhost:5173")  // Allow frontend access
 public class AuthController {
 
     @Autowired
@@ -36,6 +36,7 @@ public class AuthController {
 
     @GetMapping("/validate")
     public boolean validateToken(@RequestParam String token) {
+        System.out.println("🔁 /validate called with: " + token);
         return adminUserService.validateToken(token);
     }
 }
