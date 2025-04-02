@@ -12,12 +12,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
+                .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity in REST APIs
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/admin/login").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/admin/**").authenticated()  // Require auth for admin endpoints
+                        .anyRequest().permitAll() // Allow everything else
                 )
-                .httpBasic(Customizer.withDefaults()); // Optional for now
+                .httpBasic(Customizer.withDefaults()); // Enable basic auth only for admin
 
         return http.build();
     }
