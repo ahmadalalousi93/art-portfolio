@@ -41,6 +41,18 @@
             <version>1.18.30</version> <!-- You can update if needed -->
             <scope>provided</scope>
         </dependency>
+        <!-- Spring Security for password encryption and authentication -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
 
         <!-- MySQL JDBC Driver -->
         <dependency>
