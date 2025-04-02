@@ -8,7 +8,6 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Redirect if already logged in
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
     if (token) {
@@ -22,22 +21,26 @@ export default function AdminLogin() {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:8080/api/admin/login', {
+      const response = await fetch('http://localhost:8080/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
 
-      const text = await res.text();
+      const token = await response.text();
 
-      if (res.ok && text !== 'Invalid credentials.') {
-        localStorage.setItem('adminToken', text);
+      console.log('Status:', response.status);
+      console.log('Response:', token);
+
+      if (response.ok) {
+        localStorage.setItem('adminToken', token);
         navigate('/admin/dashboard');
       } else {
         setError('Invalid username or password.');
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      console.error('Login failed:', err);
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
