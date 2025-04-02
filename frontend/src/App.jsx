@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound';
 import About from './pages/About'
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -22,8 +23,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/about" element={<About />} />
         <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-      </Routes>
+        <Route path="/admin/dashboard" element={ <ProtectedRoute> <AdminDashboard /> </ProtectedRoute> } />      </Routes>
     </Layout>
   );
 }
