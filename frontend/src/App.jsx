@@ -7,6 +7,8 @@ import Contact from './pages/Contact';
 import ThankYou from './pages/ThankYou';
 import NotFound from './pages/NotFound';
 import About from './pages/About'
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/thank-you" element={<ThankYou />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/about" element={<About />} />
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </Layout>
   );
