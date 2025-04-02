@@ -2,34 +2,35 @@ package com.artporfolio.backend.controller;
 
 import com.artporfolio.backend.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/admin") // 🔁 changed from /api/auth to /api/admin
-@CrossOrigin(origins = "*") // Allow frontend to access API
+@RequestMapping("/api/admin")
+@CrossOrigin(origins = "*") // Allow frontend access
 public class AuthController {
 
     @Autowired
     private AdminUserService adminUserService;
 
     @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> login(@RequestBody Map<String, String> payload) {
         String username = payload.get("username");
         String password = payload.get("password");
 
-        System.out.println("🔐 Login attempt for: " + username); // Optional debug
+        System.out.println("🔐 Login attempt for: " + username);
 
         if (username == null || password == null) {
-            return "Missing username or password.";
+            return ResponseEntity.badRequest().body("Missing username or password.");
         }
 
         String token = adminUserService.authenticate(username, password);
         if (token != null) {
-            return token;
+            return ResponseEntity.ok(token);
         } else {
-            return "Invalid credentials.";
+            return ResponseEntity.status(401).body("Invalid credentials.");
         }
     }
 
