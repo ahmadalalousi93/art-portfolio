@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/admin") // 🔁 changed from /api/auth to /api/admin
 @CrossOrigin(origins = "*") // Allow frontend to access API
 public class AuthController {
 
@@ -18,6 +18,8 @@ public class AuthController {
     public String login(@RequestBody Map<String, String> payload) {
         String username = payload.get("username");
         String password = payload.get("password");
+
+        System.out.println("🔐 Login attempt for: " + username); // Optional debug
 
         if (username == null || password == null) {
             return "Missing username or password.";
