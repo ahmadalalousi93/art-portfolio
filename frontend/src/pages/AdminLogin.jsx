@@ -30,10 +30,11 @@ export default function AdminLogin() {
       const token = await response.text();
 
       console.log('Status:', response.status);
-      console.log('Response:', token);
+      console.log('Response token:', token);
 
-      if (response.ok) {
+      if (response.ok && token !== 'Invalid credentials.') {
         localStorage.setItem('adminToken', token);
+        console.log('🪪 Saved token:', token);
         navigate('/admin/dashboard');
       } else {
         setError('Invalid username or password.');
