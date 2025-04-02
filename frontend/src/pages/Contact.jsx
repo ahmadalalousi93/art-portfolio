@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import artworks from '../data/artworks';
 
 export default function Contact() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const artworkId = queryParams.get('artworkId');
+  const artwork = artworks.find((art) => art.id === artworkId);
+
   const [form, setForm] = useState({
     name: '',
     email: '',
     phone: '',
-    message: '',
+    message: artwork ? `I'm interested in "${artwork.title}". ` : '',
   });
   const [status, setStatus] = useState(null);
   const [errors, setErrors] = useState({});
@@ -45,6 +52,15 @@ export default function Contact() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-16">
       <h1 className="text-4xl font-bold mb-6">Contact Me</h1>
+
+      {artwork && (
+        <div className="mb-6 border p-4 rounded shadow-sm bg-gray-50">
+          <p className="text-sm text-gray-600">
+            You are inquiring about: <strong>{artwork.title}</strong>
+          </p>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"

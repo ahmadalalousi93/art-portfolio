@@ -15,21 +15,17 @@ export default function ArtworkDetail() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      {/* 🔙 Back Link */}
       <Link to="/shop" className="text-sm text-gray-500 hover:text-black transition mb-6 inline-block">
         ← Back to Gallery
       </Link>
 
-      {/* 📦 Artwork Layout */}
       <div className="flex flex-col md:flex-row gap-10 items-start">
-        {/* 🎨 Image */}
         <img
           src={artwork.image}
           alt={artwork.title}
           className="w-full md:w-1/2 max-h-[500px] object-cover rounded-xl shadow-lg"
         />
 
-        {/* 📝 Details */}
         <div className="flex-1 space-y-6">
           <h1 className="text-2xl sm:text-3xl font-bold">{artwork.title}</h1>
           <p className="text-base sm:text-lg text-gray-600">{artwork.description}</p>
@@ -39,9 +35,8 @@ export default function ArtworkDetail() {
             <p><strong>Price:</strong> {artwork.price}</p>
           </div>
 
-          {/* 📩 Inquire Button */}
           <Link
-            to="/contact"
+            to={`/contact?artworkId=${artwork.id}`}
             className="inline-block mt-4 bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition text-sm sm:text-base"
           >
             Inquire About This Piece
