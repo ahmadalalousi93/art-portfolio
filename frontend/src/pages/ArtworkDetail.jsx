@@ -1,11 +1,13 @@
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useCart } from '../context/CartContext'; // ✅ NEW
 
 export default function ArtworkDetail() {
   const { id } = useParams();
   const [artwork, setArtwork] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart(); // ✅ Access cart
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/artworks/${id}`)
@@ -61,12 +63,21 @@ export default function ArtworkDetail() {
             <p><strong>Price:</strong> ${artwork.price}</p>
           </div>
 
-          <Link
-            to={`/contact?artworkId=${artwork.id}`}
-            className="inline-block mt-4 bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition text-sm sm:text-base"
-          >
-            Inquire About This Piece
-          </Link>
+          <div className="flex gap-4 flex-wrap mt-4">
+            <button
+              onClick={() => addToCart(artwork)}
+              className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition text-sm sm:text-base"
+            >
+              Add to Cart
+            </button>
+
+            <Link
+              to={`/contact?artworkId=${artwork.id}`}
+              className="bg-gray-100 text-gray-800 px-6 py-2 rounded border hover:bg-white transition text-sm sm:text-base"
+            >
+              Inquire
+            </Link>
+          </div>
         </div>
       </div>
     </motion.div>
