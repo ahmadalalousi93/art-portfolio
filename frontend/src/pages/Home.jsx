@@ -1,9 +1,18 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import artworks from '../data/artworks';
 import { motion } from 'framer-motion';
 
 export default function Home() {
-  const featured = artworks.slice(0, 2);
+  const [artworks, setArtworks] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8080/api/artworks')
+      .then(res => res.json())
+      .then(setArtworks)
+      .catch(console.error);
+  }, []);
+
+  const featured = artworks.slice(0, 2); // Show first two as featured
 
   return (
     <motion.div
@@ -31,13 +40,13 @@ export default function Home() {
           {featured.map((art) => (
             <Link to={`/shop/${art.id}`} key={art.id} className="group block">
               <img
-                src={art.image}
+                src={`http://localhost:8080${art.imagePath}`}
                 alt={art.title}
                 className="w-full h-56 sm:h-64 object-cover rounded-lg shadow-lg group-hover:opacity-80 transition"
               />
               <h3 className="mt-4 text-lg sm:text-xl font-medium">{art.title}</h3>
-              <p className="text-sm text-gray-500">{art.dimensions}</p>
-              <p className="text-base text-gray-800 font-semibold">{art.price}</p>
+              <p className="text-sm text-gray-500">{art.measurements}</p>
+              <p className="text-base text-gray-800 font-semibold">${art.price}</p>
             </Link>
           ))}
         </div>
