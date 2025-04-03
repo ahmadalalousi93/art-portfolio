@@ -4,6 +4,16 @@ import { useNavigate } from 'react-router-dom';
 export default function AdminDashboard() {
   const [inquiries, setInquiries] = useState([]);
   const [activeSection, setActiveSection] = useState('inquiries');
+  const [status, setStatus] = useState('');
+  const [form, setForm] = useState({
+    title: '',
+    description: '',
+    measurements: '',
+    price: '',
+    category: '',
+    image: null,
+  });
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,9 +32,7 @@ export default function AdminDashboard() {
       credentials: 'include',
     })
       .then(res => {
-        if (!res.ok) {
-          throw new Error('Unauthorized or failed to fetch inquiries');
-        }
+        if (!res.ok) throw new Error('Unauthorized or failed to fetch inquiries');
         return res.json();
       })
       .then(data => setInquiries(data))
@@ -37,6 +45,52 @@ export default function AdminDashboard() {
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     navigate('/admin');
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value, files } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
+  };
+
+  const handleAddArtwork = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('adminToken');
+    setStatus('Submitting...');
+
+    const formData = new FormData();
+    Object.entries(form).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    try {
+      const res = await fetch('http://localhost:8080/api/admin/secure/artworks', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (res.ok) {
+        setStatus('✅ Artwork added successfully!');
+        setForm({
+          title: '',
+          description: '',
+          measurements: '',
+          price: '',
+          category: '',
+          image: null,
+        });
+      } else {
+        setStatus('❌ Failed to add artwork.');
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('❌ Error submitting artwork.');
+    }
   };
 
   return (
@@ -73,10 +127,91 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {activeSection === 'add' && <div><h1 className="text-2xl font-bold">Add Artwork</h1><p>Coming soon...</p></div>}
-        {activeSection === 'edit' && <div><h1 className="text-2xl font-bold">Edit/Delete Artwork</h1><p>Coming soon...</p></div>}
-        {activeSection === 'sales' && <div><h1 className="text-2xl font-bold">Sales/Orders</h1><p>Coming soon...</p></div>}
-        {activeSection === 'settings' && <div><h1 className="text-2xl font-bold">Settings</h1><p>Coming soon...</p></div>}
+        {activeSection === 'add' && (
+          <div className="max-w-xl mx-auto">
+            <h1 className="text-2xl font-bold mb-6">Add New Artwork</h1>
+            {status && <p className="mb-4 text-sm text-gray-700">{status}</p>}
+            <form onSubmit={handleAddArtwork} className="space-y-4">
+              <input
+                type="text"
+                name="title"
+                value={form.title}
+                onChange={handleFormChange}
+                placeholder="Title"
+                required
+                className="w-full border p-2 rounded"
+              />
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleFormChange}
+                placeholder="Description"
+                required
+                className="w-full border p-2 rounded"
+              />
+              <input
+                type="text"
+                name="measurements"
+                value={form.measurements}
+                onChange={handleFormChange}
+                placeholder="Measurements"
+                required
+                className="w-full border p-2 rounded"
+              />
+              <input
+                type="number"
+                name="price"
+                value={form.price}
+                onChange={handleFormChange}
+                placeholder="Price"
+                required
+                className="w-full border p-2 rounded"
+              />
+              <input
+                type="text"
+                name="category"
+                value={form.category}
+                onChange={handleFormChange}
+                placeholder="Category"
+                required
+                className="w-full border p-2 rounded"
+              />
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleFormChange}
+                required
+                className="w-full border p-2 rounded"
+              />
+              <button
+                type="submit"
+                className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
+              >
+                Add Artwork
+              </button>
+            </form>
+          </div>
+        )}
+
+        {activeSection === 'edit' && (
+          <div>
+            <h1 className="text-2xl font-bold">Edit/Delete Artwork</h1>
+            <p>Coming soon...</p>
+          </div>
+        )}
+        {activeSection === 'sales' && (
+          <div>
+            <h1 className="text-2xl font-bold">Sales/Orders</h1>
+            <p>Coming soon...</p>
+          </div>
+        )}
+        {activeSection === 'settings' && (
+          <div>
+            <h1 className="text-2xl font-bold">Settings</h1>
+            <p>Coming soon...</p>
+          </div>
+        )}
       </main>
     </div>
   );
