@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   return (
@@ -8,10 +8,11 @@ export default function Navbar() {
         <Link to="/">Home</Link>
         <Link to="/shop">Shop</Link>
         <Link to="/contact">Contact</Link>
-        <Link to="/about" className="hover:underline">About</Link>
+        <Link to="/about">About</Link>
+        <Link to="/cart" style={styles.cart}>🛒 Cart</Link> {/* ✅ Added cart */}
       </div>
     </nav>
-  )
+  );
 }
 
 const styles = {
@@ -27,6 +28,12 @@ const styles = {
   },
   links: {
     display: 'flex',
+    alignItems: 'center',
     gap: '1rem',
   },
-}
+  cart: {
+    fontWeight: 'bold',
+    color: '#000',
+    textDecoration: 'none',
+  },
+};
