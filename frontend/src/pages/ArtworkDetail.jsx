@@ -1,12 +1,35 @@
 import { useParams, Link } from 'react-router-dom';
-import artworks from '../data/artworks';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function ArtworkDetail() {
   const { id } = useParams();
-  const artwork = artworks.find((art) => art.id === id);
+  const [artwork, setArtwork] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!artwork) return <p className="text-center py-20 text-gray-600">Artwork not found.</p>;
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/artworks/${id}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Artwork not found');
+        return res.json();
+      })
+      .then((data) => {
+        setArtwork(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) {
+    return <p className="text-center py-20 text-gray-600">Loading artwork...</p>;
+  }
+
+  if (!artwork) {
+    return <p className="text-center py-20 text-gray-600">Artwork not found.</p>;
+  }
 
   return (
     <motion.div
@@ -15,13 +38,16 @@ export default function ArtworkDetail() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      <Link to="/shop" className="text-sm text-gray-500 hover:text-black transition mb-6 inline-block">
+      <Link
+        to="/shop"
+        className="text-sm text-gray-500 hover:text-black transition mb-6 inline-block"
+      >
         ← Back to Gallery
       </Link>
 
       <div className="flex flex-col md:flex-row gap-10 items-start">
         <img
-          src={artwork.image}
+          src={`http://localhost:8080${artwork.imagePath}`}
           alt={artwork.title}
           className="w-full md:w-1/2 max-h-[500px] object-cover rounded-xl shadow-lg"
         />
@@ -31,8 +57,8 @@ export default function ArtworkDetail() {
           <p className="text-base sm:text-lg text-gray-600">{artwork.description}</p>
 
           <div className="text-sm sm:text-base text-gray-500 space-y-1">
-            <p><strong>Dimensions:</strong> {artwork.dimensions}</p>
-            <p><strong>Price:</strong> {artwork.price}</p>
+            <p><strong>Dimensions:</strong> {artwork.measurements}</p>
+            <p><strong>Price:</strong> ${artwork.price}</p>
           </div>
 
           <Link
