@@ -6,7 +6,8 @@ import ArtworkDetail from './pages/ArtworkDetail';
 import Contact from './pages/Contact';
 import ThankYou from './pages/ThankYou';
 import NotFound from './pages/NotFound';
-import About from './pages/About'
+import About from './pages/About';
+import Cart from './pages/Cart'; // ✅ NEW: import Cart
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -19,11 +20,13 @@ function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/shop/:id" element={<ArtworkDetail />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/cart" element={<Cart />} /> {/* ✅ NEW ROUTE */}
         <Route path="/thank-you" element={<ThankYou />} />
-        <Route path="*" element={<NotFound />} />
         <Route path="/about" element={<About />} />
         <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={ <ProtectedRoute> <AdminDashboard /> </ProtectedRoute> } />      </Routes>
+        <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Layout>
   );
 }
