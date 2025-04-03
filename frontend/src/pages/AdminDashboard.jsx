@@ -11,12 +11,11 @@ export default function AdminDashboard() {
     description: '',
     measurements: '',
     price: '',
-    category: '',
+    category: '', // ✅ fixed
     image: null,
   });
   const [editForm, setEditForm] = useState(null);
-  const editFormRef = useRef(null); // 🔍 Reference to edit form
-
+  const editFormRef = useRef(null);
   const navigate = useNavigate();
   const token = localStorage.getItem('adminToken');
 
@@ -108,7 +107,7 @@ export default function AdminDashboard() {
 
     setTimeout(() => {
       editFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100); // wait for render
+    }, 100);
   };
 
   const handleEditSubmit = async (e) => {
@@ -144,6 +143,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex h-screen">
+      {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white p-6 space-y-4">
         <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
         <button onClick={() => setActiveSection('inquiries')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Inquiries</button>
@@ -154,7 +154,45 @@ export default function AdminDashboard() {
         <button onClick={handleLogout} className="mt-10 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded w-full">Logout</button>
       </aside>
 
+      {/* Main Content */}
       <main className="flex-1 p-8 overflow-y-auto">
+        {activeSection === 'inquiries' && (
+          <div>
+            <h1 className="text-2xl font-bold mb-6">Submitted Inquiries</h1>
+            {inquiries.length === 0 ? <p>No inquiries found.</p> : (
+              <div className="space-y-4">
+                {inquiries.map((inq, i) => (
+                  <div key={i} className="border rounded-lg p-4 bg-white shadow">
+                    <p><strong>Name:</strong> {inq.name}</p>
+                    <p><strong>Email:</strong> {inq.email}</p>
+                    <p><strong>Message:</strong> {inq.message}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeSection === 'add' && (
+          <div className="max-w-xl mx-auto">
+            <h1 className="text-2xl font-bold mb-6">Add New Artwork</h1>
+            {status && <p className="mb-4 text-sm text-gray-700">{status}</p>}
+            <form onSubmit={handleAddArtwork} className="space-y-4">
+              <input type="text" name="title" value={form.title} onChange={handleFormChange} placeholder="Title" required className="w-full border p-2 rounded" />
+              <textarea name="description" value={form.description} onChange={handleFormChange} placeholder="Description" required className="w-full border p-2 rounded" />
+              <input type="text" name="measurements" value={form.measurements} onChange={handleFormChange} placeholder="Measurements" required className="w-full border p-2 rounded" />
+              <input type="number" name="price" value={form.price} onChange={handleFormChange} placeholder="Price" required className="w-full border p-2 rounded" />
+              <select name="category" value={form.category || ''} onChange={handleFormChange} required className="w-full border p-2 rounded">
+                <option value="" disabled>Select category</option>
+                <option value="classic">Classic Art</option>
+                <option value="digital">Digital Art</option>
+              </select>
+              <input type="file" name="image" accept="image/*" onChange={handleFormChange} required className="w-full border p-2 rounded" />
+              <button type="submit" className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition">Add Artwork</button>
+            </form>
+          </div>
+        )}
+
         {activeSection === 'edit' && (
           <div>
             <h1 className="text-2xl font-bold mb-6">Edit/Delete Artworks</h1>
@@ -177,14 +215,15 @@ export default function AdminDashboard() {
               <form
                 ref={editFormRef}
                 onSubmit={handleEditSubmit}
-                className="mt-10 space-y-4 max-w-xl border p-4 rounded bg-gray-100"
+                className="mt-10 space-y-4 max-w-xl border p-4 rounded bg-yellow-50 ring-2 ring-yellow-200 shadow-md"
               >
                 <h2 className="text-xl font-bold mb-4">Edit Artwork: {editForm.title}</h2>
                 <input type="text" name="title" value={editForm.title} onChange={(e) => handleFormChange(e, setEditForm)} required className="w-full border p-2 rounded" />
                 <textarea name="description" value={editForm.description} onChange={(e) => handleFormChange(e, setEditForm)} required className="w-full border p-2 rounded" />
                 <input type="text" name="measurements" value={editForm.measurements} onChange={(e) => handleFormChange(e, setEditForm)} required className="w-full border p-2 rounded" />
                 <input type="number" name="price" value={editForm.price} onChange={(e) => handleFormChange(e, setEditForm)} required className="w-full border p-2 rounded" />
-                <select name="category" value={editForm.category} onChange={(e) => handleFormChange(e, setEditForm)} required className="w-full border p-2 rounded">
+                <select name="category" value={editForm.category || ''} onChange={(e) => handleFormChange(e, setEditForm)} required className="w-full border p-2 rounded">
+                  <option value="" disabled>Select category</option>
                   <option value="classic">Classic Art</option>
                   <option value="digital">Digital Art</option>
                 </select>
