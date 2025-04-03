@@ -25,33 +25,36 @@ public class ArtworkController {
     public ResponseEntity<?> addArtwork(@RequestParam("title") String title,
                                         @RequestParam("description") String description,
                                         @RequestParam("price") Double price,
+                                        @RequestParam("measurements") String measurements,
+                                        @RequestParam("category") String category,
                                         @RequestParam("image") MultipartFile image) {
         try {
-            // Create uploads directory if missing
             Path uploadPath = Paths.get(UPLOAD_DIR);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            // Save the image manually using Streams
             String filename = StringUtils.cleanPath(image.getOriginalFilename());
             Path filePath = uploadPath.resolve(filename);
+
             try (InputStream inputStream = image.getInputStream()) {
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            // Save artwork to DB
             Artwork artwork = new Artwork();
             artwork.setTitle(title);
             artwork.setDescription(description);
             artwork.setPrice(price);
+            artwork.setMeasurements(measurements);
+            artwork.setCategory(category);
             artwork.setImagePath("/" + UPLOAD_DIR + "/" + filename);
-            artworkRepository.save(artwork);
 
+            artworkRepository.save(artwork);
             return ResponseEntity.ok(artwork);
+
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body("Failed to save artwork image.");
+            return ResponseEntity.internalServerError().body("Failed to save artwork.");
         }
     }
 }
