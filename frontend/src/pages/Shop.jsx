@@ -57,7 +57,7 @@ export default function Shop() {
                 <motion.div key={art.id} variants={cardVariants}>
                   <Link to={`/shop/${art.id}`} className="group block text-center">
                     <img
-                      src={art.imagePath}
+                      src={`http://localhost:8080${art.imagePath}`}
                       alt={art.title}
                       className="w-full h-56 sm:h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
                     />
@@ -83,7 +83,7 @@ export default function Shop() {
                 <motion.div key={art.id} variants={cardVariants}>
                   <Link to={`/shop/${art.id}`} className="group block text-center">
                     <img
-                      src={art.imagePath}
+                      src={`http://localhost:8080${art.imagePath}`}
                       alt={art.title}
                       className="w-full h-56 sm:h-64 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"
                     />
