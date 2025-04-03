@@ -167,15 +167,17 @@ export default function AdminDashboard() {
                 required
                 className="w-full border p-2 rounded"
               />
-              <input
-                type="text"
+              <select
                 name="category"
                 value={form.category}
                 onChange={handleFormChange}
-                placeholder="Category"
                 required
                 className="w-full border p-2 rounded"
-              />
+              >
+                <option value="" disabled>Select category</option>
+                <option value="classic">Classic Art</option>
+                <option value="digital">Digital Art</option>
+              </select>
               <input
                 type="file"
                 name="image"
