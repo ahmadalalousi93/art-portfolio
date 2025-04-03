@@ -17,4 +17,12 @@ public class PublicArtworkController {
     public ResponseEntity<?> getAllArtworks() {
         return ResponseEntity.ok(artworkRepository.findAll());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getArtworkById(@PathVariable Long id) {
+        return artworkRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

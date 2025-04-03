@@ -47,7 +47,7 @@ public class ArtworkController {
             artwork.setPrice(price);
             artwork.setMeasurements(measurements);
             artwork.setCategory(category);
-            artwork.setImagePath("/" + UPLOAD_DIR + "/" + filename);
+            artwork.setImagePath("/uploads/" + filename); // important for frontend rendering
 
             artworkRepository.save(artwork);
             return ResponseEntity.ok(artwork);
@@ -56,5 +56,12 @@ public class ArtworkController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("Failed to save artwork.");
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getArtworkById(@PathVariable Long id) {
+        return artworkRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
