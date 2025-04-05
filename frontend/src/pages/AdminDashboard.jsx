@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AdminOrders from './AdminOrders'; // ✅ Import new Orders view
 
 export default function AdminDashboard() {
   const [inquiries, setInquiries] = useState([]);
@@ -11,7 +12,7 @@ export default function AdminDashboard() {
     description: '',
     measurements: '',
     price: '',
-    category: '', // ✅ fixed
+    category: '',
     image: null,
   });
   const [editForm, setEditForm] = useState(null);
@@ -149,12 +150,12 @@ export default function AdminDashboard() {
         <button onClick={() => setActiveSection('inquiries')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Inquiries</button>
         <button onClick={() => setActiveSection('add')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Add Artwork</button>
         <button onClick={() => setActiveSection('edit')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Edit/Delete Artwork</button>
-        <button className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Sales/Orders</button>
+        <button onClick={() => setActiveSection('orders')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Sales/Orders</button>
         <button className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Settings</button>
         <button onClick={handleLogout} className="mt-10 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded w-full">Logout</button>
       </aside>
 
-      {/* Main Content */}
+      {/* Main Panel */}
       <main className="flex-1 p-8 overflow-y-auto">
         {activeSection === 'inquiries' && (
           <div>
@@ -235,6 +236,8 @@ export default function AdminDashboard() {
             )}
           </div>
         )}
+
+        {activeSection === 'orders' && <AdminOrders />}
       </main>
     </div>
   );
