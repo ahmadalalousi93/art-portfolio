@@ -38,3 +38,4 @@ lerna-debug.log*
 # Ignore artwork images
 frontend/public/artworks/
 
+src/main/resources/application.properties
