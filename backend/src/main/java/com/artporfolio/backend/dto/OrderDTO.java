@@ -12,5 +12,7 @@ public class OrderDTO {
     private List<Long> artworkIds;
     private List<String> artworkTitles;
     private double totalPrice;
+    private double shippingCost; // added
+    private double finalTotal;   // added
     private String status;
 }

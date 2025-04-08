@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "orders") // ✅ Fix: Avoid using reserved word "order"
+@Table(name = "orders") // Fix: Avoid using reserved word "order"
 @Data
 public class Order {
 
@@ -21,7 +21,10 @@ public class Order {
     @ElementCollection
     private List<Long> artworkIds;
 
-    private double totalPrice;
+    private double totalPrice;   // base price of all artworks
+
+    private double shippingCost; // new field for shipping
+    private double finalTotal;   // totalPrice + shipping (+ tax in future)
 
     private String status;
 }

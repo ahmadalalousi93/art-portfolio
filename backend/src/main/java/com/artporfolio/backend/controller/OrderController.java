@@ -30,6 +30,12 @@ public class OrderController {
     @PostMapping("/orders")
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         order.setStatus("pending");
+
+        // ✅ Flat rate shipping (will support future international rates)
+        double shippingCost = 25.00;
+        order.setShippingCost(shippingCost);
+        order.setFinalTotal(order.getTotalPrice() + shippingCost); // future taxes here
+
         Order saved = orderRepository.save(order);
         emailService.sendOrderConfirmation(saved);
         return ResponseEntity.ok(saved);
@@ -68,6 +74,8 @@ public class OrderController {
         dto.setShippingAddress(order.getShippingAddress());
         dto.setArtworkIds(order.getArtworkIds());
         dto.setTotalPrice(order.getTotalPrice());
+        dto.setShippingCost(order.getShippingCost()); // added
+        dto.setFinalTotal(order.getFinalTotal());     // added
         dto.setStatus(order.getStatus());
 
         List<String> titles = order.getArtworkIds().stream()
