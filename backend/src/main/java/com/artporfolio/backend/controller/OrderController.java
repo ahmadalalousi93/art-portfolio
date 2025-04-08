@@ -1,7 +1,9 @@
 package com.artporfolio.backend.controller;
 
 import com.artporfolio.backend.dto.OrderDTO;
+import com.artporfolio.backend.model.Artwork;
 import com.artporfolio.backend.model.Order;
+import com.artporfolio.backend.repository.ArtworkRepository;
 import com.artporfolio.backend.repository.OrderRepository;
 import com.artporfolio.backend.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,7 @@ import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -20,9 +22,11 @@ public class OrderController {
     private OrderRepository orderRepository;
 
     @Autowired
+    private ArtworkRepository artworkRepository;
+
+    @Autowired
     private EmailService emailService;
 
-    // ✅ Public endpoint for order creation
     @PostMapping("/orders")
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         order.setStatus("pending");
@@ -31,7 +35,6 @@ public class OrderController {
         return ResponseEntity.ok(saved);
     }
 
-    // ✅ Secure Admin GET with pagination & filtering
     @GetMapping("/admin/secure/orders")
     public Page<OrderDTO> getAllOrders(
             @RequestParam(defaultValue = "0") int page,
@@ -46,7 +49,6 @@ public class OrderController {
         return orderPage.map(this::convertToDTO);
     }
 
-    // ✅ Secure Admin PUT for status update
     @PutMapping("/admin/secure/orders/{id}/status")
     public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestParam String status) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
@@ -58,7 +60,6 @@ public class OrderController {
         return ResponseEntity.ok(convertToDTO(order));
     }
 
-    // 🔁 Convert Entity to DTO
     private OrderDTO convertToDTO(Order order) {
         OrderDTO dto = new OrderDTO();
         dto.setId(order.getId());
@@ -68,6 +69,12 @@ public class OrderController {
         dto.setArtworkIds(order.getArtworkIds());
         dto.setTotalPrice(order.getTotalPrice());
         dto.setStatus(order.getStatus());
+
+        List<String> titles = order.getArtworkIds().stream()
+                .map(id -> artworkRepository.findById(id).map(Artwork::getTitle).orElse("Unknown Artwork"))
+                .collect(Collectors.toList());
+
+        dto.setArtworkTitles(titles);
         return dto;
     }
 }
