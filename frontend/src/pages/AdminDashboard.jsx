@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AdminOrders from './AdminOrders'; // ✅ Import new Orders view
+import AdminOrders from './AdminOrders';
 
 export default function AdminDashboard() {
   const [inquiries, setInquiries] = useState([]);
   const [artworks, setArtworks] = useState([]);
-  const [activeSection, setActiveSection] = useState('inquiries');
+  const [activeSection, setActiveSection] = useState(() => localStorage.getItem('adminTab') || 'inquiries');
   const [status, setStatus] = useState('');
   const [form, setForm] = useState({
     title: '',
@@ -47,8 +47,14 @@ export default function AdminDashboard() {
     }
   }, [activeSection, navigate, token]);
 
+  const handleSectionChange = (section) => {
+    setActiveSection(section);
+    localStorage.setItem('adminTab', section);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminTab');
     navigate('/admin');
   };
 
@@ -135,7 +141,7 @@ export default function AdminDashboard() {
 
       if (res.ok) {
         setEditForm(null);
-        setActiveSection('edit');
+        handleSectionChange('edit');
       }
     } catch (err) {
       console.error(err);
@@ -147,15 +153,15 @@ export default function AdminDashboard() {
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white p-6 space-y-4">
         <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
-        <button onClick={() => setActiveSection('inquiries')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Inquiries</button>
-        <button onClick={() => setActiveSection('add')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Add Artwork</button>
-        <button onClick={() => setActiveSection('edit')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Edit/Delete Artwork</button>
-        <button onClick={() => setActiveSection('orders')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Sales/Orders</button>
+        <button onClick={() => handleSectionChange('inquiries')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Inquiries</button>
+        <button onClick={() => handleSectionChange('add')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Add Artwork</button>
+        <button onClick={() => handleSectionChange('edit')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Edit/Delete Artwork</button>
+        <button onClick={() => handleSectionChange('orders')} className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Sales/Orders</button>
         <button className="block w-full text-left hover:bg-gray-700 px-4 py-2 rounded">Settings</button>
         <button onClick={handleLogout} className="mt-10 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded w-full">Logout</button>
       </aside>
 
-      {/* Main Panel */}
+      {/* Main Content */}
       <main className="flex-1 p-8 overflow-y-auto">
         {activeSection === 'inquiries' && (
           <div>

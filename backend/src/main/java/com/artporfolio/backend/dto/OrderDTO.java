@@ -9,10 +9,12 @@ public class OrderDTO {
     private String customerName;
     private String customerEmail;
     private String shippingAddress;
+    private String country;
     private List<Long> artworkIds;
     private List<String> artworkTitles;
     private double totalPrice;
-    private double shippingCost; // added
-    private double finalTotal;   // added
+    private double shippingCost;
+    private double taxAmount;
+    private double finalTotal;
     private String status;
 }

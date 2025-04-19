@@ -2,11 +2,10 @@ package com.artporfolio.backend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.List;
 
 @Entity
-@Table(name = "orders") // Fix: Avoid using reserved word "order"
+@Table(name = "orders")
 @Data
 public class Order {
 
@@ -17,14 +16,15 @@ public class Order {
     private String customerName;
     private String customerEmail;
     private String shippingAddress;
+    private String country;
 
     @ElementCollection
     private List<Long> artworkIds;
 
-    private double totalPrice;   // base price of all artworks
-
-    private double shippingCost; // new field for shipping
-    private double finalTotal;   // totalPrice + shipping (+ tax in future)
+    private double totalPrice;
+    private double shippingCost;
+    private double taxAmount;
+    private double finalTotal;
 
     private String status;
 }

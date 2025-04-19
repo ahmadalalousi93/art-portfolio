@@ -14,7 +14,9 @@ export default function Cart() {
 
   const [status, setStatus] = useState('');
 
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+  const shippingCost = 25.0;
+  const total = subtotal + shippingCost;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +36,7 @@ export default function Cart() {
       customerEmail: form.email,
       shippingAddress: form.address,
       artworkIds: cartItems.map((item) => item.id),
-      totalPrice: total,
+      totalPrice: subtotal,
       status: 'pending',
     };
 
@@ -89,7 +91,11 @@ export default function Cart() {
           ))}
 
           <div className="flex justify-between items-center mt-6">
-            <h2 className="text-xl font-bold">Total: ${total.toLocaleString()}</h2>
+            <div>
+              <p className="text-sm">Subtotal: ${subtotal.toLocaleString()}</p>
+              <p className="text-sm">Shipping: ${shippingCost.toFixed(2)}</p>
+              <h2 className="text-xl font-bold">Total: ${total.toLocaleString()}</h2>
+            </div>
             <button
               onClick={clearCart}
               className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 text-sm"

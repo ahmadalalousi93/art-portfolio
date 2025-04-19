@@ -31,10 +31,17 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         order.setStatus("pending");
 
-        // ✅ Flat rate shipping (will support future international rates)
-        double shippingCost = 25.00;
+        //Quantity-based shipping: $25 per artwork
+        int quantity = order.getArtworkIds() != null ? order.getArtworkIds().size() : 0;
+        double shippingCost = 25.00 * quantity;
+
+        //Placeholder for tax logic
+        double estimatedTax = 0.0;
+
+        double finalTotal = order.getTotalPrice() + shippingCost + estimatedTax;
+
         order.setShippingCost(shippingCost);
-        order.setFinalTotal(order.getTotalPrice() + shippingCost); // future taxes here
+        order.setFinalTotal(finalTotal);
 
         Order saved = orderRepository.save(order);
         emailService.sendOrderConfirmation(saved);
@@ -74,8 +81,8 @@ public class OrderController {
         dto.setShippingAddress(order.getShippingAddress());
         dto.setArtworkIds(order.getArtworkIds());
         dto.setTotalPrice(order.getTotalPrice());
-        dto.setShippingCost(order.getShippingCost()); // added
-        dto.setFinalTotal(order.getFinalTotal());     // added
+        dto.setShippingCost(order.getShippingCost());
+        dto.setFinalTotal(order.getFinalTotal());
         dto.setStatus(order.getStatus());
 
         List<String> titles = order.getArtworkIds().stream()
