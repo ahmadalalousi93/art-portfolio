@@ -10,16 +10,18 @@ export default function Cart() {
     name: '',
     email: '',
     address: '',
-    country: '',
+    country: 'US',
   });
 
   const [status, setStatus] = useState('');
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
   const quantity = cartItems.length;
-  const shippingCost = quantity * 25;
-  const tax = subtotal * 0.06;
-  const finalTotal = subtotal + shippingCost + tax;
+
+  const isUS = form.country.toLowerCase() === 'us';
+  const shippingCost = quantity * (isUS ? 25 : 50);
+  const tax = isUS ? subtotal * 0.06 : 0;
+  const total = subtotal + shippingCost + tax;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,9 +40,9 @@ export default function Cart() {
       customerName: form.name,
       customerEmail: form.email,
       shippingAddress: form.address,
-      country: form.country || 'US',
-      artworkIds: cartItems.map(item => item.id),
-      totalPrice: subtotal, // Backend will calculate final total
+      country: form.country,
+      artworkIds: cartItems.map((item) => item.id),
+      totalPrice: subtotal,
       status: 'pending',
     };
 
@@ -72,7 +74,7 @@ export default function Cart() {
         <p className="text-gray-600">Your cart is empty.</p>
       ) : (
         <div className="space-y-8">
-          {cartItems.map(item => (
+          {cartItems.map((item) => (
             <div key={item.id} className="flex items-center justify-between gap-4 border-b pb-4">
               <div className="flex items-center gap-4">
                 <img
@@ -96,10 +98,10 @@ export default function Cart() {
 
           <div className="flex justify-between items-center mt-6">
             <div>
-              <p className="text-sm">Subtotal: ${subtotal.toLocaleString()}</p>
-              <p className="text-sm">Shipping (${quantity} artworks): ${shippingCost.toFixed(2)}</p>
-              <p className="text-sm">Tax (6%): ${tax.toFixed(2)}</p>
-              <h2 className="text-xl font-bold">Total: ${finalTotal.toLocaleString()}</h2>
+              <p className="text-sm">Subtotal: ${subtotal.toFixed(2)}</p>
+              <p className="text-sm">Shipping: ${shippingCost.toFixed(2)}</p>
+              <p className="text-sm">Tax: ${tax.toFixed(2)}</p>
+              <h2 className="text-xl font-bold">Total: ${total.toFixed(2)}</h2>
             </div>
             <button
               onClick={clearCart}
@@ -114,7 +116,6 @@ export default function Cart() {
             className="mt-10 space-y-4 bg-gray-50 p-6 rounded shadow"
           >
             <h3 className="text-lg font-semibold mb-2">Checkout</h3>
-
             <input
               type="text"
               name="name"
@@ -147,7 +148,7 @@ export default function Cart() {
               value={form.country}
               onChange={handleChange}
               required
-              placeholder="Country (e.g. US, Canada)"
+              placeholder="Country"
               className="w-full border p-2 rounded"
             />
 
