@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders") // Avoid reserved word "order"
 @Data
 public class Order {
 
@@ -21,10 +21,9 @@ public class Order {
     @ElementCollection
     private List<Long> artworkIds;
 
-    private double totalPrice;
-    private double shippingCost;
-    private double taxAmount;
-    private double finalTotal;
-
-    private String status;
+    private double totalPrice;     // Subtotal
+    private double shippingCost;   // $25 x quantity
+    private double taxAmount;      // 6% of subtotal
+    private double finalTotal;     // Subtotal + shipping + tax
+    private String status;         // Order status
 }

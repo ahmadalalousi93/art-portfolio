@@ -31,16 +31,17 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         order.setStatus("pending");
 
-        //Quantity-based shipping: $25 per artwork
+        // Quantity-based shipping: $25 per artwork
         int quantity = order.getArtworkIds() != null ? order.getArtworkIds().size() : 0;
         double shippingCost = 25.00 * quantity;
 
-        //Placeholder for tax logic
-        double estimatedTax = 0.0;
+        // US tax: 6% on subtotal
+        double estimatedTax = order.getTotalPrice() * 0.06;
 
         double finalTotal = order.getTotalPrice() + shippingCost + estimatedTax;
 
         order.setShippingCost(shippingCost);
+        order.setTaxAmount(estimatedTax);
         order.setFinalTotal(finalTotal);
 
         Order saved = orderRepository.save(order);
@@ -79,9 +80,11 @@ public class OrderController {
         dto.setCustomerName(order.getCustomerName());
         dto.setCustomerEmail(order.getCustomerEmail());
         dto.setShippingAddress(order.getShippingAddress());
+        dto.setCountry(order.getCountry());
         dto.setArtworkIds(order.getArtworkIds());
         dto.setTotalPrice(order.getTotalPrice());
         dto.setShippingCost(order.getShippingCost());
+        dto.setTaxAmount(order.getTaxAmount());
         dto.setFinalTotal(order.getFinalTotal());
         dto.setStatus(order.getStatus());
 

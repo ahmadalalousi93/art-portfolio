@@ -12,9 +12,9 @@ public class OrderDTO {
     private String country;
     private List<Long> artworkIds;
     private List<String> artworkTitles;
-    private double totalPrice;
-    private double shippingCost;
-    private double taxAmount;
-    private double finalTotal;
-    private String status;
+    private double totalPrice;     // Subtotal of items
+    private double shippingCost;   // Based on quantity
+    private double taxAmount;      // 6% calculated tax
+    private double finalTotal;     // totalPrice + shippingCost + taxAmount
+    private String status;         // e.g., pending, confirmed, etc.
 }
