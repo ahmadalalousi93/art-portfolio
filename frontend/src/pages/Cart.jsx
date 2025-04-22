@@ -10,13 +10,16 @@ export default function Cart() {
     name: '',
     email: '',
     address: '',
+    country: '',
   });
 
   const [status, setStatus] = useState('');
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
-  const shippingCost = 25.0;
-  const total = subtotal + shippingCost;
+  const quantity = cartItems.length;
+  const shippingCost = quantity * 25.0;
+  const tax = subtotal * 0.06;
+  const total = subtotal + shippingCost + tax;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +38,7 @@ export default function Cart() {
       customerName: form.name,
       customerEmail: form.email,
       shippingAddress: form.address,
+      country: form.country || 'US',
       artworkIds: cartItems.map((item) => item.id),
       totalPrice: subtotal,
       status: 'pending',
@@ -94,6 +98,7 @@ export default function Cart() {
             <div>
               <p className="text-sm">Subtotal: ${subtotal.toLocaleString()}</p>
               <p className="text-sm">Shipping: ${shippingCost.toFixed(2)}</p>
+              <p className="text-sm">Tax: ${tax.toFixed(2)}</p>
               <h2 className="text-xl font-bold">Total: ${total.toLocaleString()}</h2>
             </div>
             <button
@@ -133,6 +138,15 @@ export default function Cart() {
               onChange={handleChange}
               required
               placeholder="Shipping Address"
+              className="w-full border p-2 rounded"
+            />
+            <input
+              type="text"
+              name="country"
+              value={form.country}
+              onChange={handleChange}
+              required
+              placeholder="Country"
               className="w-full border p-2 rounded"
             />
 

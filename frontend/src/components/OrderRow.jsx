@@ -17,7 +17,7 @@ export default function OrderRow({ order, onStatusUpdated }) {
         },
       });
 
-      if (onStatusUpdated) onStatusUpdated(); // 🔁 Refresh parent list
+      if (onStatusUpdated) onStatusUpdated();
     } catch (err) {
       console.error('❌ Failed to update status:', err);
     }
@@ -44,9 +44,11 @@ export default function OrderRow({ order, onStatusUpdated }) {
       <p><strong>Customer:</strong> {order.customerName}</p>
       <p><strong>Email:</strong> {order.customerEmail}</p>
       <p><strong>Shipping Address:</strong> {order.shippingAddress}</p>
+      <p><strong>Country:</strong> {order.country || 'N/A'}</p>
 
       <p><strong>Subtotal:</strong> ${order.totalPrice?.toLocaleString()}</p>
       <p><strong>Shipping:</strong> ${order.shippingCost?.toLocaleString()}</p>
+      <p><strong>Tax:</strong> ${order.taxAmount?.toLocaleString()}</p>
       <p><strong>Final Total:</strong> ${order.finalTotal?.toLocaleString()}</p>
 
       <p>
